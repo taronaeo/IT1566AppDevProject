@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "name": "it1566appdevproject",
+  "description": "NYP IT1566 App Dev Project Repository",
+  "repository": "https://github.com/taronaeo/IT1566AppDevProject.git",
+  "license": "MIT",
+  "scripts": {
+    "css:watch": "npx tailwindcss -i ./static/css/index.css -o ./static/dist/index.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.2.1"
+  }
+}
