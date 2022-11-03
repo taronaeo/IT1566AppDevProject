@@ -10,5 +10,9 @@ app = Flask(__name__)
 def root():
   return render_template('index.html')
 
+@app.route('/dexter')
+def dexter():
+  return 'Hello Dexter'
+
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=3000, debug=DEV_MODE)
