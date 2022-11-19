@@ -8,6 +8,7 @@
 
 from os import path
 from flask import Flask
+from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -15,6 +16,8 @@ DB_NAME = 'sgdetailmart.sqlite'
 
 def create_app():
   app = Flask(__name__)
+  api = Api(app)
+
   app.config['SECRET_KEY'] = 'abcdefghijklmnopqrstuvwxyz' # NOTE: To be changed when deploying
   app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
 
@@ -22,9 +25,11 @@ def create_app():
 
   from .auth import auth
   from .views import views
+  from .api import Listing
 
   app.register_blueprint(auth, url_prefix='/')
   app.register_blueprint(views, url_prefix='/')
+  api.add_resource(Listing, "/api/listing") # Python types are not recognised for Flask_Restful package. Ignore redline.
 
   from .models import User, Vehicle, Wallet
 
