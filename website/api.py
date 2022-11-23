@@ -13,7 +13,7 @@
 # from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 
 from . import db
-from .models import Listing
+from .models import Listing,ListingTransaction,Wallet,WalletTransaction,Vehicle,User
 from flask_restful import Resource, reqparse
 
 class ListingApi(Resource):
@@ -25,9 +25,44 @@ class ListingApi(Resource):
     return exists
   
 class ListingTransactionApi(Resource):
-  def get()
+  def get(self,uid):
+    exists = ListingTransaction.query.filter_by(uid=uid).first()
+    if not exists:
+      return {"message":"Listing Transaction not found"}, 404
+  
+    return exists
 
+class WalletApi(Resource):
+  def get(self,uid):
+    exists = Wallet.query.filter_by(uid=uid).first()
+    if not exists:
+      return {"message":"Wallet not found"}, 404
+  
+    return exists
+    
+class WalletTransactionApi(Resource):
+  def get(self,uid):
+    exists = WalletTransaction.query.filter_by(uid=uid).first()
+    if not exists:
+      return {"message":"Wallet Transaction not found"}, 404
+  
+    return exists
 
+class VehicleApi(Resource):
+  def get(self,uid):
+    exists = Vehicle.query.filter_by(uid=uid).first()
+    if not exists:
+      return {"message":"Vehicle not found"}, 404
+  
+    return exists
+  
+class UserApi(Resource):
+  def get(self,uid):
+    exists = User.query.filter_by(uid=uid).first()
+    if not exists:
+      return {"message":"User not found"}, 404
+  
+    return exists
 
 # api = Blueprint('api', __name__)
 
