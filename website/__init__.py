@@ -25,13 +25,17 @@ def create_app():
 
   from .auth import auth
   from .views import views
-  from .api import ListingApi
+  from .api import ListingApi,ListingTransactionApi,WalletApi,WalletTransactionApi,VehicleApi,UserApi
 
   app.register_blueprint(auth, url_prefix='/')
   app.register_blueprint(views, url_prefix='/')
   api.add_resource(ListingApi, "/api/listing", "/api/listing/<string:uid>") # Python types are not recognised for Flask_Restful package. Ignore redline.
-
-  from .models import User, Vehicle, Wallet
+  api.add_resource(ListingTransactionApi, "/api/listingTransaction", "/api/listingTransaction/<string:uid>")
+  api.add_resource(WalletApi, "/api/wallet", "/api/wallet/<string:uid>")
+  api.add_resource(WalletTransactionApi, "/api/walletTransaction", "/api/walletTransaction/<string:uid>")
+  api.add_resource(VehicleApi, "/api/vehicle", "/api/vehicle/<string:uid>")
+  api.add_resource(UserApi, "/api/user", "/api/user/<string:uid>")
+ 
 
   create_database(app)
 
