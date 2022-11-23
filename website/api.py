@@ -12,11 +12,21 @@
 # from flask import Blueprint, render_template, requests
 # from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 
-from flask_restful import Resource
+from . import db
+from .models import Listing
+from flask_restful import Resource, reqparse
 
-class Listing(Resource):
-  def get(self):
-    return {"data": "Hello World"}
+class ListingApi(Resource):
+  def get(self,uid):
+    exists = Listing.query.filter_by(uid=uid).first()
+    if not exists:
+      return {"message": "Listing not found" }, 404
+    
+    return exists
+  
+class ListingTransactionApi(Resource):
+  def get()
+
 
 
 # api = Blueprint('api', __name__)
