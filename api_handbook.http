@@ -1,0 +1,68 @@
+# Query user account
+GET http://localhost:3000/api/user/224444A@mymail.nyp.edu.sg
+
+###
+
+# Create user account
+POST http://localhost:3000/api/user
+Content-Type: application/json
+
+{
+  "email": "224444A@mymail.nyp.edu.sg",
+  "full_name": "224444A",
+  "home_address": "180 Ang Mo Kio Ave 8, Singapore 569830",
+  "phone_number": "64515115",
+  "password": "64515115@NYP",
+  "password_confirm": "64515115@NYP"
+}
+
+###
+
+# Query vehicle license plate
+GET http://localhost:3000/api/vehicle/GBL4731K
+
+###
+
+# Add vehicle
+POST http://localhost:3000/api/vehicle
+Content-Type: application/json
+
+{
+  "license_plate": "GBL4731K",
+  "owner_uid": "224444A@mymail.nyp.edu.sg",
+  "vehicle_make": "Nissan",
+  "vehicle_model": "NV200",
+  "unlock_system_installed": "False"
+}
+
+###
+
+# Query wallet balance
+GET http://localhost:3000/api/wallet/224444A@mymail.nyp.edu.sg
+
+###
+
+# Add wallet
+POST http://localhost:3000/api/wallet
+Content-Type: application/json
+
+{
+  "owner_uid": "224444@mymail.nyp.edu.sg"
+}
+
+###
+
+# Query listing
+GET http://localhost:3000/api/listing/DAIYW
+
+###
+
+# Create listing
+POST http://localhost:3000/api/listing
+Content-Type: application/json
+
+{
+  "owner_uid": "224444A@mymail.nyp.edu.sg",
+  "requirements": "",
+  "price": 10.00
+}

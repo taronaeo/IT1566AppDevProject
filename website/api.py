@@ -12,61 +12,30 @@
 # from flask import Blueprint, render_template, requests
 # from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 
-from . import db
-from .models import Listing,ListingTransaction,Wallet,WalletTransaction,Vehicle,User
+import shelve
+from .models import User, Wallet, Vehicle, Listing, ListingTransaction
+from .models import Listing, ListingTransaction, Wallet, WalletTransaction, Vehicle, User
 from flask_restful import Resource, reqparse
 
-class ListingApi(Resource):
-  def get(self,uid):
-    exists = Listing.query.filter_by(uid=uid).first()
-    if not exists:
-      return {"message": "Listing not found" }, 404
-    
-    return exists
-  
 class ListingTransactionApi(Resource):
-  def get(self,uid):
-    exists = ListingTransaction.query.filter_by(uid=uid).first()
+  def get(self, uid):
+    exists = ListingTransaction.get(uid)
     if not exists:
-      return {"message":"Listing Transaction not found"}, 404
-  
+      return {"message":"ListingTransaction not found"}, 404
+
     return exists
 
-class WalletApi(Resource):
-  def get(self,uid):
-    exists = Wallet.query.filter_by(uid=uid).first()
-    if not exists:
-      return {"message":"Wallet not found"}, 404
-  
-    return exists
-    
 class WalletTransactionApi(Resource):
-  def get(self,uid):
-    exists = WalletTransaction.query.filter_by(uid=uid).first()
+  def get(self, uid):
+    exists = WalletTransaction.get(uid)
     if not exists:
-      return {"message":"Wallet Transaction not found"}, 404
-  
-    return exists
+      return {"message":"WalletTransaction not found"}, 404
 
-class VehicleApi(Resource):
-  def get(self,uid):
-    exists = Vehicle.query.filter_by(uid=uid).first()
-    if not exists:
-      return {"message":"Vehicle not found"}, 404
-  
-    return exists
-  
-class UserApi(Resource):
-  def get(self,uid):
-    exists = User.query.filter_by(uid=uid).first()
-    if not exists:
-      return {"message":"User not found"}, 404
-  
     return exists
 
 # api = Blueprint('api', __name__)
 
-# user_listing_resource_fields = {   
+# user_listing_resource_fields = {
 #   'uid': fields.Integer, #listing uid
 #   'owner_uid': fields.Integer, #user uid
 #   'requirements': fields.String,
@@ -86,15 +55,15 @@ class UserApi(Resource):
 
 # class UserListingCreate(Resource):
 #   @marshal_with(user_listing_resource_fields)
-#   def get(self, uid): 
+#   def get(self, uid):
 #     user_listing_info = Listing.query.filter_by(uid = uid).first()
-#     if not user_listing_info: 
+#     if not user_listing_info:
 #       abort(404, message = "Could not find listing")
 #     return user_listing_info
-  
+
 #   @marshal_with(user_listing_resource_fields)
 #   def post(self, uid):
-#     info = listing_create_info.parse_args() 
+#     info = listing_create_info.parse_args()
 #     new_listing = Listing(uid = uid, owner_uid = info['owner_uid'], requirements = info['requirements'], price = info['price'])
 #     db.session.add(new_listing)
 #     db.session.commit()
@@ -105,7 +74,7 @@ class UserApi(Resource):
 #     user_listing_info = Listing.query.filter_by(uid = uid).first()
 #     db.session.delete(user_listing_info)
 #     db.commit()
-  
+
 #   @marshal_with(user_listing_resource_fields)
 #   def patch(self,uid):
 #     info = listing_create_info.parse_args()
@@ -114,6 +83,6 @@ class UserApi(Resource):
 #       user_listing_info.requirements = info['requirements']
 #     if info['price']:
 #       user_listing_info.price = info['price']
-    
+
 #     db.session.add(user_listing_info)
 #     db.session.commit()
