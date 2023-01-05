@@ -11,7 +11,19 @@ from . import DB_BASE_LOCATION
 from flask_login import UserMixin
 
 class User(UserMixin):
-  def __init__(self, email, password, full_name, home_address, phone_number, vehicles, uid = None) -> None:
+  def __init__(
+    self,
+    email,
+    password,
+    full_name,
+    home_address,
+    phone_number,
+    uid = None,
+    vehicles = None,
+    bank_information = None,
+    training_complete = False,
+    background_check = False
+  ) -> None:
     super().__init__()
     self.uid = uid
     self.email = email
@@ -20,6 +32,9 @@ class User(UserMixin):
     self.home_address = home_address
     self.phone_number = phone_number
     self.vehicles = vehicles
+    self.bank_information = bank_information
+    self.training_complete = training_complete
+    self.background_check = background_check
 
 class Vehicle():
   def __init__(self, uid, owner_uid, vehicle_make, vehicle_model, unlock_system_installed, created_at) -> None:

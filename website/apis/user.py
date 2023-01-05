@@ -11,6 +11,10 @@ parser.add_argument('password_confirm', type=str, required=True)
 parser.add_argument('full_name', type=str, required=True)
 parser.add_argument('home_address', type=str, required=True)
 parser.add_argument('phone_number', type=str, required=True)
+parser.add_argument('vehicles', type=list, required=False)
+parser.add_argument('bank_information', type=str, required=False)
+parser.add_argument('training_complete', type=bool, required=False)
+parser.add_argument('background_check', type=bool, required=False)
 
 class UserApiEndpoint(Resource):
   def get(self, uid):
@@ -38,8 +42,11 @@ class UserApiEndpoint(Resource):
           args['full_name'],
           args['home_address'],
           args['phone_number'],
-          vehicles=[],
           uid=args['email'],
+          vehicles=[],
+          bank_information=args['bank_information'],
+          training_complete=args['training_complete'],
+          background_check=args['background_check'],
         )
 
         db[args['email']] = user
