@@ -37,3 +37,38 @@ class ListingApiEndpoint(Resource):
         return listing.__dict__
       except Exception:
         return { "message": "Something went wrong." }, 500
+
+    def put(self,uid):
+      args = parser.parse_args()
+      with shelve.open(DB_LISTING_LOCATION) as db:
+        try:
+          exists = db[uid]
+          if exists:
+            exists = Listing(
+              uid,
+              args['owner_uid'],
+              args['requirements'],
+              args['price'],
+              transactions=[]
+            )
+            db[uid] = exists
+            return exists.__dict__
+        except KeyError:
+          return {'code': 404, 'message': 'Listing not found'}, 404
+        except Exception:
+          return {"code": 500, "message": "Something went wrong."}, 500
+      
+    def delete(self,uid):
+      with shelve.open(DB_LISTING_LOCATION) as db:
+        try:
+          exists = db[uid]
+          if exists:
+              del db[uid]
+              return {'code': 200, 'message': 'Listing Deleted'}, 200
+        except KeyError:
+          return {'code': 404, 'message': 'Listing not found'}, 404
+        except Exception: 
+          return {'code': 500, 'message': 'Somthing went wrong'}, 500
+      
+
+
