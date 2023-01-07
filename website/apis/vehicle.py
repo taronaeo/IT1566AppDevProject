@@ -43,3 +43,35 @@ class VehicleApiEndpoint(Resource):
         return vehicle.__dict__
       except Exception:
         return { "message": "Something went wrong." }, 500
+        
+    def put(self,license_plate):
+      args = parser.parse_args()
+      with shelve.open(DB_VEHICLE_LOCATION) as db:
+        try:
+          exists = db[license_plate]
+          if exists:
+            exists = Vehicle(
+              args['license_plate'],
+              args['owner_uid'],
+              args['vehicle_make'],
+              args['vehicle_model'],
+              args['unlock_system_installed'],
+              exists.__dict__['created_at']
+            )
+            return exists.__dict__
+        except KeyError:
+          return {'code': 404, 'message': 'Vehicle not found'}, 404
+        except Exception:
+          return {"code": 500, "message": "Something went wrong."}, 500
+
+      def delete(self,license_plate):
+        with shelve.open(DB_VEHICLE_LOCATION) as db:
+          try:
+            exists = db[license_plate]
+            if exists:
+                del db[license_plate]
+                return {'code': 200, 'message': 'Vehicle Deleted'}, 200
+          except KeyError:
+            return {'code': 404, 'message': 'Vehicle not found'}, 404
+          except Exception: 
+            return {'code': 500, 'message': 'Somthing went wrong'}, 500
