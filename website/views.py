@@ -13,3 +13,19 @@ views = Blueprint('views', __name__)
 @views.route('/')
 def home():
   return render_template('home.html')
+
+@views.route('/wallet')
+def wallet():
+  return render_template("wallet.html")
+
+@views.route('/retrieveacc')
+def retreieveacc():
+  return render_template("retrieveaccount.html")
+
+@views.route('/signup')
+def signup():
+  return render_template("signup.html")
+
+@views.route('/login')
+def login():
+  return render_template("login.html")
