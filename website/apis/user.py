@@ -29,8 +29,7 @@ class UserApiEndpoint(Resource):
 
     with shelve.open(DB_USER_LOCATION) as db:
       try:
-        exists = db[args['email']]
-        if exists:
+        if args['email'] in db:
           return { "message": "Account already exists." }, 409
 
         if args['password'] != args['password_confirm']:

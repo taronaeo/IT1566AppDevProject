@@ -15,32 +15,16 @@ class WalletApiEndpoint(Resource):
       except KeyError:
         return { "message": "Wallet not found." }, 404
 
-  #! Something isnt working correctly here. Will debug later. - Aaron
   def post(self):
     args = parser.parse_args()
 
     with shelve.open(DB_WALLET_LOCATION) as db:
       try:
-        exists = db[args['owner_uid']]
-        if exists:
+        if args['owner_uid'] in db:
           return { "message": "Wallet already exists." }, 409
+
+        wallet = Wallet(args['owner_uid'], 0, 0, [])
+        db[args['owner_uid']] = wallet
+        return wallet.__dict__
       except Exception:
         return { "message": "Something went wrong." }, 500
-
-    # with shelve.open(DB_WALLET_LOCATION) as db:
-    #   exists = db[args['owner_uid']]
-    #   if exists:
-    #     return { "message": "Wallet already exists." }, 409
-
-    #   try:
-    #     wallet = Wallet(
-    #       args['owner_uid'],
-    #       0,
-    #       0,
-    #       []
-    #     )
-
-    #     db[args['owner_uid']] = wallet
-    #     return wallet.__dict__
-    #   except Exception:
-    #     return { "message": "Something went wrong." }, 500
