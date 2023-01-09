@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Contractor Listings{% endblock %}
+
+{% block content %}
+<form method="POST">
+    <h1 style="text-decoration: underline; color: blue; opacity: 0.75;">Create Contractor Listing</h2>
+    <div class="form-group">
+        <label for="Contname">Name</label>
+        <br>
+        <input
+            type="text" 
+            class="form-control"
+            name="Contname" 
+            id="Contname"
+            placeholder="Enter your Name"
+        /> 
+        <br>
+        <br>
+        <label for="ContContactNo.">Contact No.</label>
+        <br>
+        <input
+            type="number"
+            class="form-control"
+            name="ContContactNo." 
+            id="ContContactNo."
+            placeholder="Enter Contact No."
+        />
+        <br>
+        <br>
+        <label for="ServPrice1">Price of Service 1</label>
+        <br>
+        <input
+            type="number"
+            class="form-control"
+            name="ServPrice1" 
+            id="ServPrice1"
+            placeholder="Enter Price for Service 1"
+        />
+        <br>
+        <br>
+        <label for="ServPrice2">Price of Service 2</label>
+        <br>
+        <input
+            type="number"
+            class="form-control"
+            name="ServPrice2" 
+            id="ServPrice2"
+            placeholder="Enter Price for Service 2"
+        />
+        <br>
+        <br>
+        <label for="ServPrice3">Price of Service 3</label>
+        <br>
+        <input
+            type="number"
+            class="form-control"
+            name="ServPrice3" 
+            id="ServPrice3"
+            placeholder="Enter Price for Service 3"
+        />
+        <br>
+        <br>
+        <input type="submit" value="Create Listing">
+    </div>
+
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
