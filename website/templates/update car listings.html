@@ -4,7 +4,7 @@
 
 {% block content %}
 <form method="POST">
-    <h1 style="text-decoration: underline; color: blue; opacity: 0.75;">Create Car Listing</h2>
+    <h1 style="text-decoration: underline; color: blue; opacity: 0.75;">Update Car Listing</h2>
     <div class="form-group">
         <label for="UpdCarMake">Update Car Make</label>
         <br>
@@ -25,6 +25,28 @@
             name="UpdCarModel" 
             id="UpdCarModel"
             placeholder="Update Model of Car"
+        />
+        <br>
+        <br>
+        <label for="UpdCarLicensePlate">Update Car License Plate</label>
+        <br>
+        <input
+            type="text"
+            class="form-control"
+            name="UpdLicensePlate" 
+            id="UpdLicensePlate"
+            placeholder="Update License Plate"
+        />
+        <br>
+        <br>
+        <label for="UpdCarAge">Update Car Age</label>
+        <br>
+        <input
+            type="number"
+            class="form-control"
+            name="UpdCarAge" 
+            id="UpdCarAge"
+            placeholder="Update Age of Car"
         />
         <br>
         <br>
