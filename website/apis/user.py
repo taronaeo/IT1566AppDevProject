@@ -52,40 +52,40 @@ class UserApiEndpoint(Resource):
         return user.__dict__
       except Exception:
         return { "message": "Something went wrong." }, 500
-    
-    def put(self,uid):
-      args = parser.parse_args()
-      with shelve.open(DB_USER_LOCATION) as db:
-        try:
-          exists = db[uid]
-          if exists:
-            exists = User(
-              args['email'],
-              args['password'],
-              args['full_name'],
-              args['home_address'],
-              args['phone_number'],
-              uid=uid,
-              vehicles=[],
-              bank_information=args['bank_information'],
-              training_complete=exists.__dict__['training_complete'], #training and background cannot be changed
-              background_check=exists.__dict__['background_check'],
-            )
-            return exists.__dict__
-        except KeyError:
-          return {'code': 404, 'message': 'User not found'}, 404
-        except Exception:
-          return {"code": 500, "message": "Something went wrong."}, 500
 
-      def delete(self,uid):
-        with shelve.open(DB_USER_LOCATION) as db:
-          try:
-            exists = db[uid]
-            if exists:
-                del db[uid]
-                return {'code': 200, 'message': 'User Account Deleted'}, 200
-          except KeyError:
-            return {'code': 404, 'message': 'User Account not found'}, 404
-          except Exception: 
-            return {'code': 500, 'message': 'Somthing went wrong'}, 500
+  def put(self,uid):
+    args = parser.parse_args()
+    with shelve.open(DB_USER_LOCATION) as db:
+      try:
+        exists = db[uid]
+        if exists:
+          exists = User(
+            args['email'],
+            args['password'],
+            args['full_name'],
+            args['home_address'],
+            args['phone_number'],
+            uid=uid,
+            vehicles=[],
+            bank_information=args['bank_information'],
+            training_complete=exists.__dict__['training_complete'], #training and background cannot be changed
+            background_check=exists.__dict__['background_check'],
+          )
+          return exists.__dict__
+      except KeyError:
+        return {'code': 404, 'message': 'User not found'}, 404
+      except Exception:
+        return {"code": 500, "message": "Something went wrong."}, 500
+
+  def delete(self,uid):
+    with shelve.open(DB_USER_LOCATION) as db:
+      try:
+        exists = db[uid]
+        if exists:
+            del db[uid]
+            return {'code': 200, 'message': 'User Account Deleted'}, 200
+      except KeyError:
+        return {'code': 404, 'message': 'User Account not found'}, 404
+      except Exception:
+        return {'code': 500, 'message': 'Somthing went wrong'}, 500
 
