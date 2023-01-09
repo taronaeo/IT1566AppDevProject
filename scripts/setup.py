@@ -20,6 +20,9 @@ def setup():
   print('Installing packages from requirements.txt...')
   subprocess.call('python3 -m pip install -r requirements.txt'.split(' '), stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
 
+  print('Creating `instance` folder for db files...')
+  subprocess.call('mkdir instance'.split(' '), stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+
   print('All done.')
 
 if __name__ == '__main__':
