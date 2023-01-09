@@ -52,7 +52,7 @@ class UserApiEndpoint(Resource):
         return user.__dict__
       except Exception:
         return { "message": "Something went wrong." }, 500
-    
+
   def put(self, uid):
     args = parser.parse_args()
     with shelve.open(DB_USER_LOCATION) as db:
