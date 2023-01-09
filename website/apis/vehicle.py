@@ -26,8 +26,7 @@ class VehicleApiEndpoint(Resource):
 
     with shelve.open(DB_VEHICLE_LOCATION) as db:
       try:
-        exists = db[args['license_plate']]
-        if exists:
+        if args['license_plate'] in db:
           return { "message": "Vehicle already exists." }, 409
 
         vehicle = Vehicle(

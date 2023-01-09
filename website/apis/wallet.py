@@ -18,54 +18,38 @@ class WalletApiEndpoint(Resource):
       except KeyError:
         return { "message": "Wallet not found." }, 404
 
-  #! Something isnt working correctly here. Will debug later. - Aaron
   def post(self):
     args = parser.parse_args()
 
     with shelve.open(DB_WALLET_LOCATION) as db:
       try:
-        exists = db[args['owner_uid']]
-        if exists:
+        if args['owner_uid'] in db:
           return { "message": "Wallet already exists." }, 409
+
+        wallet = Wallet(args['owner_uid'], 0, 0, [])
+        db[args['owner_uid']] = wallet
+        return wallet.__dict__
       except Exception:
         return { "message": "Something went wrong." }, 500
 
-    # with shelve.open(DB_WALLET_LOCATION) as db:
-    #   exists = db[args['owner_uid']]
-    #   if exists:
-    #     return { "message": "Wallet already exists." }, 409
-
-    #   try:
-    #     wallet = Wallet(
-    #       args['owner_uid'],
-    #       0,
-    #       0,
-    #       []
-    #     )
-
-    #     db[args['owner_uid']] = wallet
-    #     return wallet.__dict__
-    #   except Exception:
-    #     return { "message": "Something went wrong." }, 500
-
-      def put(self,owner_uid):
-        args = parser.parse_args()
-        with shelve.open(DB_WALLET_LOCATION) as db:
-          try:
-            exists = db[owner_uid]
-            if exists:
-              exists = Wallet(
-                args['owner_uid'],
-                args['balance'],
-                args['stamps_collected'],
-                args['transactions']
-              )
-              db[owner_uid] = exists
-              return exists.__dict__
-          except KeyError:
-            return {'code': 404, 'message': 'Wallet not found'}, 404
-          except Exception:
-            return {"code": 500, "message": "Something went wrong."}, 500
+    def put(self,owner_uid):
+      args = parser.parse_args()
+      with shelve.open(DB_WALLET_LOCATION) as db:
+        try:
+          exists = db[owner_uid]
+          if exists:
+            exists = Wallet(
+              args['owner_uid'],
+              args['balance'],
+              args['stamps_collected'],
+              args['transactions']
+            )
+            db[owner_uid] = exists
+            return exists.__dict__
+        except KeyError:
+          return {'code': 404, 'message': 'Wallet not found'}, 404
+        except Exception:
+          return {"code": 500, "message": "Something went wrong."}, 500
       
     def delete(self,owner_uid):
       with shelve.open(DB_WALLET_LOCATION) as db:
@@ -78,3 +62,4 @@ class WalletApiEndpoint(Resource):
           return {'code': 404, 'message': 'Wallet not found'}, 404
         except Exception: 
           return {'code': 500, 'message': 'Somthing went wrong'}, 500
+
