@@ -83,6 +83,8 @@ class UserApiEndpoint(Resource):
         return {"code": 500, "message": "Something went wrong."}, 500
 
   def delete(self,uid):
+    print('called')
+
     with shelve.open(DB_USER_LOCATION) as db:
       try:
         del db[uid]
@@ -91,4 +93,3 @@ class UserApiEndpoint(Resource):
         return {'code': 404, 'message': 'User Account not found'}, 404
       except Exception: 
         return {'code': 500, 'message': 'Somthing went wrong'}, 500
-

@@ -7,7 +7,7 @@
 """
 
 import shelve
-from . import DB_WALLET_LOCATION
+from . import DB_USER_LOCATION, DB_WALLET_LOCATION
 from flask import Blueprint, request, redirect, url_for, render_template
 from flask_login import login_required, current_user
 
@@ -27,8 +27,9 @@ def wallet():
 
 @views.route('/retrieveacc')
 @login_required
-def retreieveacc():
-  return render_template("retrieveacc.html")
+def retrieveacc():
+  with shelve.open(DB_USER_LOCATION) as db:
+    return render_template("retrieveacc.html", users=db)
 
 @views.route('/signup')
 def signup():

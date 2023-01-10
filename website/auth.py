@@ -38,7 +38,7 @@ def login():
       user = db[email]
       if user.password == password:
         login_user(user, remember=True)
-        return redirect(url_for('views.retreieveacc'))
+        return redirect(url_for('views.retrieveacc'))
 
   return render_template('login.html')
 
@@ -74,6 +74,6 @@ def signup():
       db_wallet[email] = wallet
 
     login_user(user, remember=True)
-    return redirect(url_for('views.retreieveacc'))
+    return redirect(url_for('views.retrieveacc'))
 
   return render_template('signup.html')
