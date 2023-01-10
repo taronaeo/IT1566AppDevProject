@@ -19,7 +19,7 @@ class WalletApiEndpoint(Resource):
   def get(self, owner_uid):
     with shelve.open(DB_WALLET_LOCATION) as db:
       try:
-        return db[owner_uid].__dict__
+        return db[owner_uid].to_json()
       except KeyError:
         return { "message": "Wallet not found." }, 404
 
@@ -33,13 +33,13 @@ class WalletApiEndpoint(Resource):
 
         wallet = Wallet(args['owner_uid'], 0, 0, [])
         db[args['owner_uid']] = wallet
-        return wallet.__dict__
+        return wallet.to_json()
       except Exception:
         return { "message": "Something went wrong." }, 500
 
   def put(self, owner_uid):
     args = put_parser.parse_args()
-    timestamp = datetime.datetime.now()
+    timestamp = datetime.datetime.now().strftime('%d/%m/%Y %I:%M %p')
 
     with shelve.open(DB_WALLET_LOCATION) as db:
       if owner_uid not in db:
@@ -56,7 +56,7 @@ class WalletApiEndpoint(Resource):
         wallet.transactions.append(transaction)
 
       db[owner_uid] = wallet
-      return wallet.__dict__
+      return wallet.to_json()
 
   def delete(self,owner_uid):
     with shelve.open(DB_WALLET_LOCATION) as db:
@@ -67,4 +67,3 @@ class WalletApiEndpoint(Resource):
         return {'code': 404, 'message': 'Wallet not found'}, 404
       except Exception:
         return {'code': 500, 'message': 'Somthing went wrong'}, 500
-
