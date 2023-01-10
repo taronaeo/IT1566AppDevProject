@@ -40,6 +40,7 @@ def login():
   return render_template("login.html")
 
 @views.route('/carlistings')
+@login_required
 def carlistings():
   with shelve.open(DB_LISTING_LOCATION) as db:
     return render_template("car listings.html", owner_uid=current_user.email, cars=db) # type: ignore
