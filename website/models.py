@@ -35,6 +35,30 @@ class User(UserMixin):
     self.bank_information = bank_information
     self.training_complete = training_complete
     self.background_check = background_check
+  
+  @staticmethod
+  def create_user(
+    email,
+    password,
+    full_name,
+    home_address,
+    phone_number
+  ):
+    return User(
+      email,
+      password,
+      full_name,
+      home_address,
+      phone_number,
+      uid=email,
+      vehicles=[],
+      bank_information="",
+      training_complete=False,
+      background_check=False
+    )
+  
+  def get_id(self):
+    return (self.email)
 
 class Vehicle():
   def __init__(self, uid, owner_uid, vehicle_make, vehicle_model, unlock_system_installed, created_at) -> None:

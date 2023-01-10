@@ -1,5 +1,5 @@
 # Query user account
-GET http://localhost:3000/api/user/224444A@mymail.nyp.edu.sg
+GET http://localhost:3000/api/user/203724T@mymail.nyp.edu.sg
 
 ###
 

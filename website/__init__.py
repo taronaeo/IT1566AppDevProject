@@ -6,8 +6,10 @@
   `py main.py`
 """
 
+import shelve
 from flask import Flask
 from flask_restful import Api
+from flask_login import LoginManager
 
 DB_BASE_LOCATION = "instance/sgdetailmart"
 DB_USER_LOCATION = f"{DB_BASE_LOCATION}_user"
@@ -23,13 +25,16 @@ def create_app():
 
   app.config['SECRET_KEY'] = 'abcdefghijklmnopqrstuvwxyz' # NOTE: To be changed when deploying
 
+  login_manager = LoginManager()
+  login_manager.login_view = "auth.login"
+  login_manager.init_app(app)
+
   from .auth import auth
   from .views import views
   from .apis.user import UserApiEndpoint
   from .apis.wallet import WalletApiEndpoint
   from .apis.vehicle import VehicleApiEndpoint
   from .apis.listing import ListingApiEndpoint
-  # from .api import ListingTransactionApi,WalletTransactionApi
 
   app.register_blueprint(auth, url_prefix='/')
   app.register_blueprint(views, url_prefix='/')
@@ -37,8 +42,13 @@ def create_app():
   api.add_resource(WalletApiEndpoint, "/api/wallet", "/api/wallet/<string:owner_uid>")
   api.add_resource(VehicleApiEndpoint, "/api/vehicle", "/api/vehicle/<string:license_plate>")
   api.add_resource(ListingApiEndpoint, "/api/listing", "/api/listing/<string:uid>")
+
+  @login_manager.user_loader
+  def load_user(email):
+    with shelve.open(DB_USER_LOCATION) as db:
+      try:
+        return db[email]
+      except KeyError:
+        pass
   
-  # api.add_resource(WalletTransactionApi, "/api/walletTransaction", "/api/walletTransaction/<string:uid>")
-  # api.add_resource(ListingTransactionApi, "/api/listingTransaction", "/api/listingTransaction/<string:uid>")
- 
   return app
