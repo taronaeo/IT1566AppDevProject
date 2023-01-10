@@ -61,8 +61,10 @@ Content-Type: application/json
 {
   "owner_uid": "224444A@mymail.nyp.edu.sg"
 }
+
 ###
-PUT http://localhost:3000/api/wallet/224444A@mymail.nyp.edu.sg
+
+PUT http://localhost:3000/api/wallet/203724T@mymail.nyp.edu.sg
 Content-Type: application/json
 
 {

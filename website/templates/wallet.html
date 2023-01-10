@@ -16,13 +16,12 @@
       <p class="text-gray-600 mb-4">Your current account balance is:</p>
       <h3 class="text-4xl font-bold text-gray-800 mb-4">${{ wallet.balance }}</h3>
       <div class="flex items-center justify-between">
-        <form method="POST">
-          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-4">
-            Top up
-          </button>
-        </form>
-        <button class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full mr-4">
-          Transfer
+        <button id="topup" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-4">
+          Top up
+        </button>
+        <button id="withdraw"
+          class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full mr-4">
+          Withdraw
         </button>
         <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-4">
           Receive
@@ -54,12 +53,35 @@
           </tr>
         </thead>
         <tbody>
+          {% for record in wallet.transactions | reverse %}
           <tr>
-            <td class="p-4">9/1/2023</td>
-            <td class="p-4">Car washing service</td>
-            <td class="p-4">$51.99</td>
+            <td class="p-4">{{ record.transaction_timestamp }}</td>
+            <td class="p-4">{{ record.transaction_type }}</td>
+            <td class="p-4">{{ record.transaction_amount }}</td>
           </tr>
+          {% endfor %}
         </tbody>
+      </table>
+
+      <script>
+        const btnTopup = document.getElementById('topup')
+        const btnWithdraw = document.getElementById('withdraw')
+
+        btnTopup.onclick = () => sendRequest('increment')
+        btnWithdraw.onclick = () => sendRequest('decrement')
+
+        const sendRequest = (type) => {
+          const xhr = new XMLHttpRequest();
+          xhr.open('PUT', '/api/wallet/{{ wallet.uid }}')
+          xhr.setRequestHeader('Content-Type', 'application/json')
+          xhr.send(JSON.stringify({
+            "type": type,
+            "amount": 1000
+          }))
+
+          setTimeout(() => window.location.reload(), 250)
+        }
+      </script>
 </body>
 
 </div>

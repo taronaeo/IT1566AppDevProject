@@ -20,17 +20,8 @@ def home():
 @views.route('/wallet', methods=['GET', 'POST'])
 @login_required
 def wallet():
-  if request.method == 'POST':
-    with shelve.open(DB_WALLET_LOCATION) as db:
-      wallet = db[current_user.email] # type: ignore
-      wallet.balance += 20
-      db[current_user.email] = wallet # type: ignore
-
-    return redirect(url_for('views.wallet'))
-
   with shelve.open(DB_WALLET_LOCATION) as db:
     wallet = db[current_user.email] # type: ignore
-    print(wallet.__dict__)
 
   return render_template("wallet.html", wallet=wallet)
 
