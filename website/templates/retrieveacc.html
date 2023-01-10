@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Account Management</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <div class="container mx-auto py-8">
+    <h1 class="text-2xl font-bold mb-4">Account Management</h1>
+    <table class="table-auto w-full">
+      <thead>
+        <tr>
+          <th class="px-4 py-2">Account Type</th>
+          <th class="px-4 py-2">Name</th>
+          <th class="px-4 py-2">UID</th>
+          <th class="px-4 py-2">Date of Birth</th>
+          <th class="px-4 py-2">Contact Number</th>
+          <th class="px-4 py-2">Email Address</th>
+          <th class="px-4 py-2">Home Address</th>
+          <th class="px-4 py-2">Postal Code</th>
+          <th class="px-4 py-2"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="px-4 py-2">Contractor</td>
+          <td class="px-4 py-2">Jane Tan</td>
+          <td class="px-4 py-2">92931425121</td>
+          <td class="px-4 py-2">01/01/2000</td>
+          <td class="px-4 py-2">83921929</td>
+          <td class="px-4 py-2">example@gmail.com</td>
+          <td class="px-4 py-2">Ang Mo Kio Avenue 1</td>
+          <td class="px-4 py-2">749 292</td>
+          <td class="px-4 py-2 flex justify-around">
+            <a href="UpdateAcc.html"><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Update</button></a>
+            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
+{% endblock %}

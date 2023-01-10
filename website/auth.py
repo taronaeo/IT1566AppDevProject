@@ -6,24 +6,41 @@
   `py main.py`
 """
 
-from . import db
+from . import DB_USER_LOCATION
 from .models import User
 
-from flask import Blueprint, render_template, request
+import shelve
+from flask import Blueprint, render_template, request, redirect, url_for
+from flask_login import login_required, login_user, logout_user
 from werkzeug.security import generate_password_hash
 
 auth = Blueprint('auth', __name__)
 
+@auth.route('/logout')
+@login_required
+def logout():
+  logout_user()
+  return redirect(url_for('auth.login'))
+
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
-  # if request.method == 'POST':
-  #   email = request.form.get('email')
-  #   password = request.form.get('password')
-  return render_template('login.html')
+  if request.method == 'POST':
+    email = request.form.get('email')
+    password = request.form.get('password')
 
-@auth.route('/logout')
-def logout():
-  return "<h1>Logout</h1>"
+    if email == None or password == None:
+      return redirect(url_for('auth.login'))
+
+    with shelve.open(DB_USER_LOCATION) as db:
+      if email not in db:
+        return redirect(url_for('auth.login'))
+
+      user = db[email]
+      if user.password == password:
+        login_user(user, remember=True)
+        return redirect(url_for('views.retreieveacc'))
+
+  return render_template('login.html')
 
 @auth.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -36,33 +53,24 @@ def signup():
     phone_number = request.form.get('phone_number')
 
     if not email or \
-       not password or \
-       not password_confirm or \
-       not full_name or \
-       not home_address or \
-       not phone_number:
-      return 'ERROR: Please ensure that all the fields are filled out!'
-    
-    if len(password) < 6 or len(password_confirm) < 6:
-      return 'ERROR: Password must have a minimum length of 6 characters!'
-    
-    if password != password_confirm:
-      return 'ERROR: Both passwords do not match!'
+      not password or \
+      not password_confirm or \
+      not full_name or \
+      not home_address or \
+      not phone_number:
+      return redirect(url_for('auth.signup'))
 
-    exists = User.query.filter_by(email=email).first()
-    if exists:
-      return 'ERROR: User already exists!'
-    
-    password = generate_password_hash(password, method='sha256')
-    user = User(
-      email=email,
-      password=password,
-      full_name=full_name,
-      home_address=home_address,
-      phone_number=phone_number
-    )
-    db.session.add(user)
-    db.session.commit()
-    return 'Account created!'
+    if password != password_confirm:
+      return redirect(url_for('auth.signup'))
+
+    with shelve.open(DB_USER_LOCATION) as db:
+      if email in db:
+        return redirect(url_for('auth.signup'))
+
+      user = User.create_user(email, password, full_name, home_address, phone_number)
+      db[email] = user
+
+    login_user(user, remember=True)
+    return redirect(url_for('views.retreieveacc'))
 
   return render_template('signup.html')
