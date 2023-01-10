@@ -6,7 +6,8 @@
   ! `py main.py`
 """
 
-import shelve
+import shelve, random, string
+
 from . import DB_BASE_LOCATION
 from flask_login import UserMixin
 
@@ -35,6 +36,30 @@ class User(UserMixin):
     self.bank_information = bank_information
     self.training_complete = training_complete
     self.background_check = background_check
+  
+  @staticmethod
+  def create_user(
+    email,
+    password,
+    full_name,
+    home_address,
+    phone_number
+  ):
+    return User(
+      email,
+      password,
+      full_name,
+      home_address,
+      phone_number,
+      uid=email,
+      vehicles=[],
+      bank_information="",
+      training_complete=False,
+      background_check=False
+    )
+  
+  def get_id(self):
+    return (self.email)
 
 class Vehicle():
   def __init__(self, uid, owner_uid, vehicle_make, vehicle_model, unlock_system_installed, created_at) -> None:
@@ -51,23 +76,17 @@ class Wallet():
     self.balance = balance
     self.stamps_collected = stamps_collected
     self.transactions = transactions
+  
+  @staticmethod
+  def create_wallet(email):
+    return Wallet(email, 0, 0, [])
 
 class WalletTransaction():
-  def __init__(self, uid, wallet_uid, transaction_type, transaction_amount, transaction_remarks, transaction_timestamp) -> None:
-    self.uid = uid
-    self.wallet_uid = wallet_uid
+  def __init__(self, transaction_type, transaction_amount, transaction_remarks, transaction_timestamp) -> None:
     self.transaction_type = transaction_type
     self.transaction_amount = transaction_amount
     self.transaction_remarks = transaction_remarks
     self.transaction_timestamp = transaction_timestamp
-  
-  @staticmethod
-  def get(uid):
-    with shelve.open(DB_BASE_LOCATION) as db:
-      try:
-        return db['WalletTransaction'][uid]
-      except KeyError:
-        return None
 
 class Listing():
   def __init__(self, uid, owner_uid, requirements, price, transactions) -> None:
