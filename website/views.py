@@ -15,19 +15,24 @@ views = Blueprint('views', __name__)
 @views.route('/home')
 def home():
   return render_template('home.html')
+
 @views.route('/wallet')
 def wallet():
   return render_template("wallet.html")
+
 @views.route('/retrieveacc')
 @login_required
 def retreieveacc():
   return render_template("retrieveacc.html")
+
 @views.route('/signup')
 def signup():
   return render_template("signup.html")
+
 @views.route('/login')
 def login():
   return render_template("login.html")
+
 @views.route('/carlistings')
 def carlistings():
   return render_template("car listings.html")
