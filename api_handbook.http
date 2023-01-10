@@ -89,6 +89,7 @@ Content-Type: application/json
 }
 
 ###
+
 PUT http://localhost:3000/api/listing/ADHPL
 Content-Type: application/json
 
@@ -100,6 +101,7 @@ Content-Type: application/json
 
 
 ###
+
 PUT   http://localhost:3000/api/vehicle/GBL4731K
 Content-Type: application/json
 
@@ -110,8 +112,11 @@ Content-Type: application/json
   "vehicle_model": "Evo 9",
   "unlock_system_installed": "True"
 }
+
 ###
+
 GET http://localhost:3000/api/vehicle/SSS777S
 
 ###
+
 DELETE http://localhost:3000/api/vehicle/SSS777S
