@@ -66,7 +66,13 @@ def updatecontractorlistings():
 
 @views.route('/UpdateAcc')
 def updateA():
-  return render_template("UpdateAcc.html")
+  email = request.args.get('email')
+
+  if not email:
+    return redirect(url_for('views.retrieveacc'))
+
+  with shelve.open(DB_USER_LOCATION) as db:
+    return render_template("UpdateAcc.html", user=db[email])
 
 @views.route('/VehicleStore')
 def VehicleStore():
