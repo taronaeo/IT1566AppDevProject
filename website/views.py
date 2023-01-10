@@ -20,7 +20,7 @@ def wallet():
 
 @views.route('/retrieveacc')
 def retreieveacc():
-  return render_template("retrieveaccount.html")
+  return render_template("retrieveacc.html")
 
 @views.route('/signup')
 def signup():
@@ -29,3 +29,15 @@ def signup():
 @views.route('/login')
 def login():
   return render_template("login.html")
+
+@views.route('/UpdateAcc')
+def updateA():
+  return render_template("UpdateAcc.html")
+
+@views.route('/VehicleStore')
+def VehicleStore():
+  return render_template("VehicleStore.html")
+
+@views.route('/UpdateVehicle')
+def updateV():
+  return render_template("UpdateVehicle.html")
