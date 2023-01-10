@@ -11,6 +11,10 @@ parser.add_argument('owner_uid', type=str, required=True)
 parser.add_argument('requirements', type=str, required=True)
 parser.add_argument('price', type=float, required=True)
 
+put_parser = reqparse.RequestParser()
+put_parser.add_argument('requirements', type=str, required=False)
+put_parser.add_argument('price', type=float, required=False)
+
 class ListingApiEndpoint(Resource):
   def get(self, uid):
     with shelve.open(DB_LISTING_LOCATION) as db:
@@ -38,26 +42,20 @@ class ListingApiEndpoint(Resource):
       except Exception:
         return { "message": "Something went wrong." }, 500
 
-  def put(self,uid):
-    args = parser.parse_args()
+  def put(self, uid):
+    args = put_parser.parse_args()
+
     with shelve.open(DB_LISTING_LOCATION) as db:
-      try:
-        if uid not in db:
-          return {"code": 404, "message": "Listing does not exist."}, 404
-        listing = Listing(
-          uid,
-          args['owner_uid'],
-          args['requirements'],
-          args['price'],
-          transactions=db[uid].__dict__['transactions']
-        )
-        db[uid] = listing
-        return listing.__dict__
-      except KeyError:
-        return {'code': 404, 'message': 'Listing not found'}, 404
-      except Exception:
-        return {"code": 500, "message": "Something went wrong."}, 500
-      
+      if uid not in db:
+        return { "code": 404, "message": "Listing does not exist." }, 404
+
+      listing = db[uid]
+      listing.requirements = args['requirements'] or listing.requirements
+      listing.price = args['price'] or listing.price
+
+      db[uid] = listing
+      return listing.__dict__
+
   def delete(self,uid):
     with shelve.open(DB_LISTING_LOCATION) as db:
       try:
@@ -65,8 +63,8 @@ class ListingApiEndpoint(Resource):
         return {'code': 200, 'message': 'Listing Deleted'}, 200
       except KeyError:
         return {'code': 404, 'message': 'Listing not found'}, 404
-      except Exception: 
+      except Exception:
         return {'code': 500, 'message': 'Somthing went wrong'}, 500
-      
+
 
 

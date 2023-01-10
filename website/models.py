@@ -36,7 +36,7 @@ class User(UserMixin):
     self.bank_information = bank_information
     self.training_complete = training_complete
     self.background_check = background_check
-  
+
   @staticmethod
   def create_user(
     email,
@@ -57,7 +57,7 @@ class User(UserMixin):
       training_complete=False,
       background_check=False
     )
-  
+
   def get_id(self):
     return (self.email)
 
@@ -76,7 +76,11 @@ class Wallet():
     self.balance = balance
     self.stamps_collected = stamps_collected
     self.transactions = transactions
-  
+
+  def to_json(self):
+    self.transactions = list(map(lambda o: o.__dict__, self.transactions))
+    return self.__dict__
+
   @staticmethod
   def create_wallet(email):
     return Wallet(email, 0, 0, [])
@@ -95,14 +99,6 @@ class Listing():
     self.requirements = requirements
     self.price = price
     self.transactions = transactions
-  
-  @staticmethod
-  def get(uid):
-    with shelve.open(DB_BASE_LOCATION) as db:
-      try:
-        return db['Listing'][uid]
-      except KeyError:
-        return None
 
 class ListingTransaction():
   def __init__(self, uid, start_photos, start_damages, start_timestamp, end_photos, end_timestamp, final_price) -> None:
@@ -113,7 +109,7 @@ class ListingTransaction():
     self.end_photos = end_photos
     self.end_timestamp = end_timestamp
     self.final_price = final_price
-  
+
   @staticmethod
   def get(uid):
     with shelve.open(DB_BASE_LOCATION) as db:

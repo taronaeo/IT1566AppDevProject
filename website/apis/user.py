@@ -16,6 +16,11 @@ parser.add_argument('bank_information', type=str, required=False)
 parser.add_argument('training_complete', type=bool, required=False)
 parser.add_argument('background_check', type=bool, required=False)
 
+put_parser = reqparse.RequestParser()
+put_parser.add_argument('full_name', type=str, required=False)
+put_parser.add_argument('home_address', type=str, required=False)
+put_parser.add_argument('phone_number', type=str, required=False)
+
 class UserApiEndpoint(Resource):
   def get(self, uid):
     with shelve.open(DB_USER_LOCATION) as db:
@@ -54,37 +59,21 @@ class UserApiEndpoint(Resource):
         return { "message": "Something went wrong." }, 500
 
   def put(self, uid):
-    args = parser.parse_args()
+    args = put_parser.parse_args()
+
     with shelve.open(DB_USER_LOCATION) as db:
-      try:
-        if uid not in db:
-          return {'code': 404, "message": "Account does not exist." }, 404
+      if uid not in db:
+        return {'code': 404, "message": "Account does not exist." }, 404
 
-        if args['password'] != args['password_confirm']:
-          return {"message": "Passwords do not match."}
+      user = db[uid]
+      user.full_name = args['full_name'] or user.full_name
+      user.home_address = args['home_address'] or user.home_address
+      user.phone_number = args['phone_number'] or user.phone_number
 
-        user = User(
-          args['email'],
-          args['password'],
-          args['full_name'],
-          args['home_address'],
-          args['phone_number'],
-          uid=args['email'],
-          vehicles=args['vehicles'],
-          bank_information=args['bank_information'],
-          training_complete=args['training_complete'],
-          background_check=args['background_check'],
-        )
-        db[args['email']] = user
-        return user.__dict__
-      except KeyError:
-        return {'code': 404, 'message': 'User not found'}, 404
-      except Exception:
-        return {"code": 500, "message": "Something went wrong."}, 500
+      db[uid] = user
+      return user.__dict__
 
-  def delete(self,uid):
-    print('called')
-
+  def delete(self, uid):
     with shelve.open(DB_USER_LOCATION) as db:
       try:
         del db[uid]
