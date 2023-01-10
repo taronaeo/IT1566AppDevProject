@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Car Listings{% endblock %}
+
+{% block content %}
+<script src="https://cdn.tailwindcss.com"></script>
+<div class="container mx-auto py-8">
+    <h1 class="text-2xl font-bold mb-4">Car Listings</h1>
+    <table class="table-auto w-full">
+      <thead>
+        <tr>
+          <th class="px-4 py-2">Car Make</th>
+          <th class="px-4 py-2">Car Model</th>
+          <th class="px-4 py-2">Car License Plate</th>
+          <th class="px-4 py-2">Car Age</th>
+          <th class="px-4 py-2">Home Address</th>
+          <th class="px-4 py-2">Contact Number</th>
+          <th class="px-4 py-2">Proposed Price</th>
+          <th class="px-4 py-2"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="px-4 py-2">Honda </td>
+          <td class="px-4 py-2">Civic</td>
+          <td class="px-4 py-2">SFD 4200L</td>
+          <td class="px-4 py-2">5</td>
+          <td class="px-4 py-2">420 geylang</td>
+          <td class="px-4 py-2">12345678</td>
+          <td class="px-4 py-2">$40</td>
+          <td class="px-4 py-2 flex justify-around">
+          <td><button type="submit">Update Contractor listing</button></td>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    <form action="POST">
+      <button type="submit">Create Car listing</button>
+    </form>
+  </div>
+
+
+
+
+
+
+{% endblock %}
+

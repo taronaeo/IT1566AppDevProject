@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}Update Car Listings{% endblock %}
+
+{% block content %}
+<form method="POST">
+    <h1 style="text-decoration: underline; color: blue; opacity: 0.75;">Update Car Listing</h2>
+    <div class="form-group">
+        <label for="UpdCarMake">Update Car Make</label>
+        <br>
+        <input
+            type="text" 
+            class="form-control"
+            name="UpdCarMake" 
+            id="UpdCarMake"
+            placeholder="Update Make of Car"
+        /> 
+        <br>
+        <br>
+        <label for="UpdCarModel">Update Car Model</label>
+        <br>
+        <input
+            type="text"
+            class="form-control"
+            name="UpdCarModel" 
+            id="UpdCarModel"
+            placeholder="Update Model of Car"
+        />
+        <br>
+        <br>
+        <label for="UpdCarLicensePlate">Update Car License Plate</label>
+        <br>
+        <input
+            type="text"
+            class="form-control"
+            name="UpdLicensePlate" 
+            id="UpdLicensePlate"
+            placeholder="Update License Plate"
+        />
+        <br>
+        <br>
+        <label for="UpdCarAge">Update Car Age</label>
+        <br>
+        <input
+            type="number"
+            class="form-control"
+            name="UpdCarAge" 
+            id="UpdCarAge"
+            placeholder="Update Age of Car"
+        />
+        <br>
+        <br>
+        <label for="UpdHomeAddy">Update Home Address</label>
+        <br>
+        <input
+            type="address"
+            class="form-control"
+            name="UpdHomeAddy" 
+            id="UpdHomeAddy"
+            placeholder="Update your Home Address Here"
+        />
+        <br>
+        <br>
+        <label for="UpdCustContactNo.">Update Contact No.</label>
+        <br>
+        <input
+            type="tel"
+            class="form-control"
+            name="UpdCustContactNo." 
+            id="UpdCustContactNo."
+            placeholder="Update your Contact No."
+        />
+        <br>
+        <br>
+        <label for="UpdProPrice">Update Proposed Price</label>
+        <br>
+        <input
+            type="number"
+            class="form-control"
+            name="UpdProPrice" 
+            id="UpdProPrice"
+            placeholder="Update your Price"
+        />
+        <br>
+        <br>
+        <input type="submit" value="Update Car Listing">
+        <br>
+        <br>
+        <button type="button" value="Delete" onclick="deleteItem()">Delete Listing</button>
+    </div>
+
+
+
+
+
+
+{% endblock %}

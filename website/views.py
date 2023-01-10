@@ -39,6 +39,30 @@ def signup():
 def login():
   return render_template("login.html")
 
+@views.route('/carlistings')
+def carlistings():
+  return render_template("car listings.html")
+
+@views.route('/contractorlistings')
+def contractorlistings():
+  return render_template('contractor listings.html')
+
+@views.route('/createcarlistings')
+def createcarlistings():
+  return render_template('create car listings.html')
+
+@views.route('createcontractorlistings')
+def createcontractorlistings():
+  return render_template('create contractor listings.html')
+
+@views.route('/updatecarlistings')
+def updatecarlistings():
+  return render_template('update car listings.html')
+
+@views.route('/update contractor listings')
+def updatecontractorlistings():
+  return render_template('update contractor listings.html')
+
 @views.route('/UpdateAcc')
 def updateA():
   return render_template("UpdateAcc.html")
@@ -50,3 +74,4 @@ def VehicleStore():
 @views.route('/UpdateVehicle')
 def updateV():
   return render_template("UpdateVehicle.html")
+
