@@ -75,6 +75,10 @@ class Wallet():
     self.balance = balance
     self.stamps_collected = stamps_collected
     self.transactions = transactions
+  
+  @staticmethod
+  def create_wallet(email):
+    return Wallet(email, 0, 0, [])
 
 class WalletTransaction():
   def __init__(self, uid, wallet_uid, transaction_type, transaction_amount, transaction_remarks, transaction_timestamp) -> None:

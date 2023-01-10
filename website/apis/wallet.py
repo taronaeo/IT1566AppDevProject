@@ -38,12 +38,14 @@ class WalletApiEndpoint(Resource):
       try:
         if owner_uid not in db:
           return {"code": 404, "message": "Wallet does not exist"}, 404
+
         wallet = Wallet(
           args['owner_uid'],
           args['balance'],
           args['stamps_collected'],
           args['transactions']
         )
+
         db[owner_uid] = wallet
         return wallet.__dict__
       except KeyError:

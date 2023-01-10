@@ -6,19 +6,33 @@
   `py main.py`
 """
 
-from flask import Blueprint, render_template
-from flask_login import login_required
+import shelve
+from . import DB_WALLET_LOCATION
+from flask import Blueprint, request, redirect, url_for, render_template
+from flask_login import login_required, current_user
 
 views = Blueprint('views', __name__)
 
 @views.route('/')
-@views.route('/home')
 def home():
   return render_template('home.html')
 
-@views.route('/wallet')
+@views.route('/wallet', methods=['GET', 'POST'])
+@login_required
 def wallet():
-  return render_template("wallet.html")
+  if request.method == 'POST':
+    with shelve.open(DB_WALLET_LOCATION) as db:
+      wallet = db[current_user.email] # type: ignore
+      wallet.balance += 20
+      db[current_user.email] = wallet # type: ignore
+
+    return redirect(url_for('views.wallet'))
+
+  with shelve.open(DB_WALLET_LOCATION) as db:
+    wallet = db[current_user.email] # type: ignore
+    print(wallet.__dict__)
+
+  return render_template("wallet.html", wallet=wallet)
 
 @views.route('/retrieveacc')
 @login_required
