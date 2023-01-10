@@ -6,8 +6,8 @@
   `py main.py`
 """
 
-from . import DB_USER_LOCATION
-from .models import User
+from . import DB_USER_LOCATION, DB_WALLET_LOCATION
+from .models import User, Wallet
 
 import shelve
 from flask import Blueprint, render_template, request, redirect, url_for
@@ -38,7 +38,7 @@ def login():
       user = db[email]
       if user.password == password:
         login_user(user, remember=True)
-        return redirect(url_for('views.retreieveacc'))
+        return redirect(url_for('views.retrieveacc'))
 
   return render_template('login.html')
 
@@ -63,14 +63,17 @@ def signup():
     if password != password_confirm:
       return redirect(url_for('auth.signup'))
 
-    with shelve.open(DB_USER_LOCATION) as db:
-      if email in db:
+    with shelve.open(DB_USER_LOCATION) as db_user, \
+         shelve.open(DB_WALLET_LOCATION) as db_wallet:
+      if email in db_user:
         return redirect(url_for('auth.signup'))
 
       user = User.create_user(email, password, full_name, home_address, phone_number)
-      db[email] = user
+      wallet = Wallet.create_wallet(email)
+      db_user[email] = user
+      db_wallet[email] = wallet
 
     login_user(user, remember=True)
-    return redirect(url_for('views.retreieveacc'))
+    return redirect(url_for('views.retrieveacc'))
 
   return render_template('signup.html')

@@ -1,5 +1,5 @@
 # Query user account
-GET http://localhost:3000/api/user/203724T@mymail.nyp.edu.sg
+GET http://localhost:3000/api/user/222309A@mymail.nyp.edu.sg
 
 ###
 
@@ -11,6 +11,18 @@ Content-Type: application/json
   "email": "224444A@mymail.nyp.edu.sg",
   "full_name": "224444A",
   "home_address": "180 Ang Mo Kio Ave 8, Singapore 569830",
+  "phone_number": "64515115",
+  "password": "64515115@NYP",
+  "password_confirm": "64515115@NYP"
+}
+###
+PUT http://localhost:3000/api/user/224444A@mymail.nyp.edu.sg
+Content-Type: application/json
+
+{
+  "email": "222309A@mymail.nyp.edu.sg",
+  "full_name": "Dexter Teo",
+  "home_address": "NYP, Singapore 123123",
   "phone_number": "64515115",
   "password": "64515115@NYP",
   "password_confirm": "64515115@NYP"
@@ -47,13 +59,24 @@ POST http://localhost:3000/api/wallet
 Content-Type: application/json
 
 {
-  "owner_uid": "224444@mymail.nyp.edu.sg"
+  "owner_uid": "224444A@mymail.nyp.edu.sg"
 }
 
 ###
 
+PUT http://localhost:3000/api/wallet/203724T@mymail.nyp.edu.sg
+Content-Type: application/json
+
+{
+  "owner_uid": "222309A@mymail.nyp.edu.sg",
+  "balance": 200
+}
+
+
+###
+
 # Query listing
-GET http://localhost:3000/api/listing/DAIYW
+GET http://localhost:3000/api/listing/ADHPL
 
 ###
 
@@ -66,3 +89,36 @@ Content-Type: application/json
   "requirements": "",
   "price": 10.00
 }
+
+###
+
+PUT http://localhost:3000/api/listing/ADHPL
+Content-Type: application/json
+
+{
+  "owner_uid": "222309A@mymail.nyp.edu.sg",
+  "requirements": "Exterior",
+  "price": 20.00
+}
+
+
+###
+
+PUT   http://localhost:3000/api/vehicle/GBL4731K
+Content-Type: application/json
+
+{
+  "license_plate": "SSS777S",
+  "owner_uid": "222309@mymail.nyp.edu.sg",
+  "vehicle_make": "Mitsubishi",
+  "vehicle_model": "Evo 9",
+  "unlock_system_installed": "True"
+}
+
+###
+
+GET http://localhost:3000/api/vehicle/SSS777S
+
+###
+
+DELETE http://localhost:3000/api/vehicle/SSS777S
