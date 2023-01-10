@@ -3,47 +3,79 @@
 {% block title %}Car Listings{% endblock %}
 
 {% block content %}
-<script src="https://cdn.tailwindcss.com"></script>
 <div class="container mx-auto py-8">
-    <h1 class="text-2xl font-bold mb-4">Car Listings</h1>
-    <table class="table-auto w-full">
-      <thead>
-        <tr>
-          <th class="px-4 py-2">Car Make</th>
-          <th class="px-4 py-2">Car Model</th>
-          <th class="px-4 py-2">Car License Plate</th>
-          <th class="px-4 py-2">Car Age</th>
-          <th class="px-4 py-2">Home Address</th>
-          <th class="px-4 py-2">Contact Number</th>
-          <th class="px-4 py-2">Proposed Price</th>
-          <th class="px-4 py-2"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="px-4 py-2">Honda </td>
-          <td class="px-4 py-2">Civic</td>
-          <td class="px-4 py-2">SFD 4200L</td>
-          <td class="px-4 py-2">5</td>
-          <td class="px-4 py-2">420 geylang</td>
-          <td class="px-4 py-2">12345678</td>
-          <td class="px-4 py-2">$40</td>
-          <td class="px-4 py-2 flex justify-around">
-          <td><button type="submit">Update Contractor listing</button></td>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <br>
-    <form action="POST">
-      <button type="submit">Create Car listing</button>
-    </form>
-  </div>
+  <h1 class="text-2xl font-bold mb-4">Car Listings</h1>
+  <table class="table-auto w-full">
+    <thead>
+      <tr>
+        <th class="px-4 py-2">UID</th>
+        <th class="px-4 py-2">Owner UID</th>
+        <th class="px-4 py-2">Requirements</th>
+        <th class="px-4 py-2">Price</th>
+        <th class="px-4 py-2"></th>
+        <th class="px-4 py-2"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if cars|length == 0 %}
+      <tr>
+        <td colspan="10" class="px-4 py-2">No vehicle records</td>
+      </tr>
+      {% endif %}
 
-
-
-
-
-
+      {% for key, listing in cars.items() | sort(attribute='1.uid') %}
+      <tr>
+        <td class="px-4 py-2">{{ listing.uid }}</td>
+        <td class="px-4 py-2">{{ listing.owner_uid }}</td>
+        <td class="px-4 py-2">{{ listing.requirements}}</td>
+        <td class="px-4 py-2">{{ listing.price }}</td>
+        <td class="px-4 py-2 flex justify-around">
+        <td><button onclick="updatelisting('{{ listing.uid }}')">Update</button></td>
+        <td><button onclick="deletelisting('{{ listing.uid }}')">Delete</button></td>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <br>
+  <button type="submit" onclick="createlisting()">Create Car listing</button>
+</div>
 {% endblock %}
 
+{% block script %}
+<script>
+  function createlisting() {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '/api/listing');
+    xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.send(JSON.stringify({
+      "owner_uid": '{{ owner_uid }}',
+      "requirements": "Clean exterior, Detail interior, Wax.",
+      "price": 45.00
+    }))
+
+    setTimeout(() => window.location.reload(), 250)
+  }
+
+  function updatelisting(listing_uid) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('PUT', `/api/listing/${listing_uid}`)
+    xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.send(JSON.stringify({
+      "requirements": "Clean exterior only.",
+      "price": 10
+    }))
+
+    setTimeout(() => window.location.reload(), 250)
+  }
+
+  function deletelisting(listing_uid) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('DELETE', `/api/listing/${listing_uid}`)
+    xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.send(null)
+
+    setTimeout(() => window.location.reload(), 250)
+  }
+</script>
+{% endblock %}

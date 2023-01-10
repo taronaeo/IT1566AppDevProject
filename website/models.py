@@ -100,14 +100,6 @@ class Listing():
     self.price = price
     self.transactions = transactions
 
-  @staticmethod
-  def get(uid):
-    with shelve.open(DB_BASE_LOCATION) as db:
-      try:
-        return db['Listing'][uid]
-      except KeyError:
-        return None
-
 class ListingTransaction():
   def __init__(self, uid, start_photos, start_damages, start_timestamp, end_photos, end_timestamp, final_price) -> None:
     self.uid = uid

@@ -7,7 +7,7 @@
 """
 
 import shelve
-from . import DB_USER_LOCATION, DB_WALLET_LOCATION
+from . import DB_USER_LOCATION, DB_WALLET_LOCATION, DB_LISTING_LOCATION
 from flask import Blueprint, request, redirect, url_for, render_template
 from flask_login import login_required, current_user
 
@@ -41,7 +41,8 @@ def login():
 
 @views.route('/carlistings')
 def carlistings():
-  return render_template("car listings.html")
+  with shelve.open(DB_LISTING_LOCATION) as db:
+    return render_template("car listings.html", owner_uid=current_user.email, cars=db) # type: ignore
 
 @views.route('/contractorlistings')
 def contractorlistings():
