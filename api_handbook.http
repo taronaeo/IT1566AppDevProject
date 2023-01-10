@@ -31,6 +31,21 @@ Content-Type: application/json
 GET http://localhost:3000/api/vehicle/GBL4731K
 
 ###
+GET http://localhost:3000/api/vehicle/SSS0983R
+
+###
+DELETE http://localhost:3000/api/vehicle/SSS0983R
+
+###
+PUT http://localhost:3000/api/vehicle/GBL4731K
+Content-Type: application/json
+
+{
+  "type": "update",
+  "vehicle_make": "Mazda",
+  "vehicle_model": "RX7",
+}
+###
 
 # Add vehicle
 POST http://localhost:3000/api/vehicle
@@ -42,6 +57,18 @@ Content-Type: application/json
   "vehicle_make": "Nissan",
   "vehicle_model": "NV200",
   "unlock_system_installed": "False"
+}
+###
+
+POST   http://localhost:3000/api/vehicle
+Content-Type: application/json
+
+{
+  "license_plate": "SSS777S",
+  "owner_uid": "224444A@mymail.nyp.edu.sg",
+  "vehicle_make": "Mitsubishi",
+  "vehicle_model": "Evo 9",
+  "unlock_system_installed": "True"
 }
 
 ###

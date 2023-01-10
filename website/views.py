@@ -7,7 +7,8 @@
 """
 
 import shelve
-from . import DB_USER_LOCATION, DB_WALLET_LOCATION, DB_LISTING_LOCATION
+
+from . import DB_USER_LOCATION, DB_WALLET_LOCATION, DB_LISTING_LOCATION, DB_VEHICLE_LOCATION
 from flask import Blueprint, request, redirect, url_for, render_template
 from flask_login import login_required, current_user
 
@@ -24,6 +25,16 @@ def wallet():
     wallet = db[current_user.email] # type: ignore
 
   return render_template("wallet.html", wallet=wallet)
+  
+@views.route('/vehicle', methods = ['GET','POST','DELETE'])
+@login_required
+def vehiclestore():
+  with shelve.open(DB_VEHICLE_LOCATION) as db:
+    vehicles = []
+    for i in db:
+      if current_user.email == db[i].owner_uid:
+        vehicles.append(db[i]) 
+  return render_template("VehicleStore.html", vehicles = vehicles)
 
 @views.route('/retrieveacc')
 @login_required

@@ -7,36 +7,87 @@
 <body>
   <div class="container mx-auto py-8">
     <h1 class="text-2xl font-bold mb-4">Vehicle Management</h1>
+    <button id = 'add' class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full">
+      Add Vehicle
+    </button>
     <table class="table-auto w-full">
       <thead>
         <tr>
-          <th class="px-4 py-2">Name</th>
           <th class="px-4 py-2">UID</th>
           <th class="px-4 py-2">Car Make</th>
           <th class="px-4 py-2">Car Model</th>
           <th class="px-4 py-2">License Plate Number</th>
-          <th class="px-4 py-2">Car Age</th>
           <th class="px-4 py-2"></th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td class="px-4 py-2">Jane Tan</td>
-          <td class="px-4 py-2">9283829382</td>
-          <td class="px-4 py-2">Nissan</td>
-          <td class="px-4 py-2">Skyline GT-R</td>
-          <td class="px-4 py-2">SBA 1234A</td>
-          <td class="px-4 py-2">5 years</td>
-          <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full">
-            Add Vehicle
-          </button>
+          {% for vehicle in vehicles %}
+          <tr>
+            <td class="p-4" id = 'owner_uid'>{{ vehicle.owner_uid }}</td>
+            <td class="p-4">{{ vehicle.vehicle_make }}</td>
+            <td class="p-4">{{ vehicle.vehicle_model }}</td>
+            <td class="p-4" id = 'uid'>{{ vehicle.uid }}</td>
+          
           <td class="px-4 py-2 flex justify-around">
-            <a href="/UpdateVehicle"><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Update</button></a>
+            <button id = 'update' class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Update</button>
             <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">Delete</button>
           </td>
+          <td class = "px-4 py-2 flex justify-around">
+            <button id = 'remove' class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">Delete</button>
+          </td>
+          {% endfor %}
+          </tr>
         </tr>
+        
       </tbody>
     </table>
   </div>
+  <script>
+    const addVehicle = document.getElementById('add');
+    const updateVehicle = document.getElementById('update');
+    const removeVehicle = document.getElementById('remove');
+
+
+    const putRequest = (type) => {
+      const uid = document.getElementById('uid').innerText;
+      const xhr = new XMLHttpRequest();
+      xhr.open('PUT', '/api/vehicle/'+uid)
+      xhr.setRequestHeader('Content-Type', 'application/json')
+      xhr.send(JSON.stringify({
+        "type": type,
+        "vehicle_make": "Mazda",
+        "vehicle_model": "RX7",
+        "uid": document.getElementById('uid').innerText
+      })) 
+      setTimeout(() => window.location.reload(), 250)
+    }
+    
+    const delRequest = () => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('DELETE', '/api/vehicle/'+document.getElementById('uid').innerText)
+      xhr.send()
+      setTimeout(() => window.location.reload(), 250)
+    }
+
+    const sendRequest = () => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '/api/vehicle')
+      xhr.setRequestHeader('Content-Type', 'application/json')
+      xhr.send(JSON.stringify({
+        "license_plate": "SSS0983R",
+        "vehicle_model": "Honda",
+        "owner_uid": "224444A@mymail.nyp.edu.sg",
+        "vehicle_make": "Civic",
+        "unlock_system_installed": true 
+      })) 
+      setTimeout(() => window.location.reload(), 250)
+    }
+
+    addVehicle.onclick = () => sendRequest('add');
+    updateVehicle.onclick = () => putRequest('update');
+    removeVehicle.onclick = () => delRequest('remove');
+
+  </script>
 </body>
 </html>

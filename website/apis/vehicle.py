@@ -13,6 +13,11 @@ parser.add_argument('vehicle_make', type=str, required=True)
 parser.add_argument('vehicle_model', type=str, required=True)
 parser.add_argument('unlock_system_installed', type=bool, required=True)
 
+update_parser = reqparse.RequestParser()
+update_parser.add_argument('type',type = str, required = True)
+update_parser.add_argument('vehicle_make',type = str, required = True)
+update_parser.add_argument('vehicle_model',type = str, required = True)
+update_parser.add_argument('uid',type = str, required = True)
 class VehicleApiEndpoint(Resource):
   def get(self, license_plate):
     with shelve.open(DB_VEHICLE_LOCATION) as db:
@@ -28,7 +33,7 @@ class VehicleApiEndpoint(Resource):
       try:
         if args['license_plate'] in db:
           return { "message": "Vehicle already exists." }, 409
-
+  
         vehicle = Vehicle(
           args['license_plate'],
           args['owner_uid'],
@@ -44,22 +49,22 @@ class VehicleApiEndpoint(Resource):
         return { "message": "Something went wrong." }, 500
         
   def put(self,license_plate):
-    args = parser.parse_args()
+    args = update_parser.parse_args()
     with shelve.open(DB_VEHICLE_LOCATION) as db:
       try:
         if license_plate not in db:
           return {'code': 404, "message": "Vehicle does not exist." }, 404
-
-        vehicle = Vehicle(
-          args['license_plate'],
-          args['owner_uid'],
-          args['vehicle_make'],
-          args['vehicle_model'],
-          args['unlock_system_installed'],
-          created_at=db[license_plate].__dict__['created_at']
-        )
-        db[args['license_plate']] = vehicle
-        return vehicle.__dict__
+        if args['type'] == 'update':
+          vehicle = Vehicle(
+            license_plate,
+            db[license_plate].owner_uid,
+            args['vehicle_make'],
+            args['vehicle_model'],
+            db[license_plate].unlock_system_installed,
+            created_at=db[license_plate].created_at
+          )
+          db[license_plate] = vehicle
+          return vehicle.__dict__
       except KeyError:
         return {'code': 404, 'message': 'Vehicle not found'}, 404
       except Exception:
