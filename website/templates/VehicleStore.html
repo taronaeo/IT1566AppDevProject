@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Vehicle Management</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body>
   <div class="container mx-auto py-8">
     <h1 class="text-2xl font-bold mb-4">Vehicle Management</h1>
-    <button id = 'add' class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full">
+    <button id='add' class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full">
       Add Vehicle
     </button>
     <table class="table-auto w-full">
@@ -23,23 +25,22 @@
       <tbody>
         <tr>
           {% for vehicle in vehicles %}
-          <tr>
-            <td class="p-4" id = 'owner_uid'>{{ vehicle.owner_uid }}</td>
-            <td class="p-4">{{ vehicle.vehicle_make }}</td>
-            <td class="p-4">{{ vehicle.vehicle_model }}</td>
-            <td class="p-4" id = 'uid'>{{ vehicle.uid }}</td>
-          
+        <tr>
+          <td class="p-4" id='owner_uid'>{{ vehicle.owner_uid }}</td>
+          <td class="p-4">{{ vehicle.vehicle_make }}</td>
+          <td class="p-4">{{ vehicle.vehicle_model }}</td>
+          <td class="p-4" id='uid'>{{ vehicle.uid }}</td>
+
           <td class="px-4 py-2 flex justify-around">
-            <button id = 'update' class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Update</button>
-            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">Delete</button>
-          </td>
-          <td class = "px-4 py-2 flex justify-around">
-            <button id = 'remove' class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">Delete</button>
+            <button id='update'
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Update</button>
+            <button id='remove'
+              class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">Delete</button>
           </td>
           {% endfor %}
-          </tr>
         </tr>
-        
+        </tr>
+
       </tbody>
     </table>
   </div>
@@ -52,20 +53,20 @@
     const putRequest = (type) => {
       const uid = document.getElementById('uid').innerText;
       const xhr = new XMLHttpRequest();
-      xhr.open('PUT', '/api/vehicle/'+uid)
+      xhr.open('PUT', '/api/vehicle/' + uid)
       xhr.setRequestHeader('Content-Type', 'application/json')
       xhr.send(JSON.stringify({
         "type": type,
         "vehicle_make": "Mazda",
         "vehicle_model": "RX7",
         "uid": document.getElementById('uid').innerText
-      })) 
+      }))
       setTimeout(() => window.location.reload(), 250)
     }
-    
+
     const delRequest = () => {
       const xhr = new XMLHttpRequest();
-      xhr.open('DELETE', '/api/vehicle/'+document.getElementById('uid').innerText)
+      xhr.open('DELETE', '/api/vehicle/' + document.getElementById('uid').innerText)
       xhr.send()
       setTimeout(() => window.location.reload(), 250)
     }
@@ -79,8 +80,8 @@
         "vehicle_model": "Honda",
         "owner_uid": "224444A@mymail.nyp.edu.sg",
         "vehicle_make": "Civic",
-        "unlock_system_installed": true 
-      })) 
+        "unlock_system_installed": true
+      }))
       setTimeout(() => window.location.reload(), 250)
     }
 
@@ -90,4 +91,5 @@
 
   </script>
 </body>
+
 </html>

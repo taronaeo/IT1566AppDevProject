@@ -25,7 +25,7 @@ def wallet():
     wallet = db[current_user.email] # type: ignore
 
   return render_template("wallet.html", wallet=wallet)
-  
+
 @views.route('/vehicle', methods = ['GET','POST','DELETE'])
 @login_required
 def vehiclestore():
@@ -33,7 +33,7 @@ def vehiclestore():
     vehicles = []
     for i in db:
       if current_user.email == db[i].owner_uid:
-        vehicles.append(db[i]) 
+        vehicles.append(db[i])
   return render_template("VehicleStore.html", vehicles = vehicles)
 
 @views.route('/retrieveacc')
@@ -72,7 +72,7 @@ def createcontractorlistings():
 def updatecarlistings():
   return render_template('update car listings.html')
 
-@views.route('/update contractor listings')
+@views.route('/updatecontractorlistings')
 def updatecontractorlistings():
   return render_template('update contractor listings.html')
 
@@ -93,4 +93,3 @@ def VehicleStore():
 @views.route('/UpdateVehicle')
 def updateV():
   return render_template("UpdateVehicle.html")
-
