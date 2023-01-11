@@ -72,7 +72,7 @@ def createcontractorlistings():
 def updatecarlistings():
   return render_template('update car listings.html')
 
-@views.route('/update contractor listings')
+@views.route('/updatecontractorlistings')
 def updatecontractorlistings():
   return render_template('update contractor listings.html')
 
