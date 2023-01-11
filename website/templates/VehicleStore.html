@@ -25,17 +25,18 @@
       <tbody>
         <tr>
           {% for vehicle in vehicles %}
-        <tr>
-          <td class="p-4" id='owner_uid'>{{ vehicle.owner_uid }}</td>
-          <td class="p-4">{{ vehicle.vehicle_make }}</td>
-          <td class="p-4">{{ vehicle.vehicle_model }}</td>
-          <td class="p-4" id='uid'>{{ vehicle.uid }}</td>
-
-          <td class="px-4 py-2 flex justify-around">
-            <button id='update'
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Update</button>
-            <button id='remove'
-              class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">Delete</button>
+          <tr>
+            <td class="p-4" id = 'owner_uid'>{{ vehicle.owner_uid }}</td>
+            <td class="p-4">{{ vehicle.vehicle_make }}</td>
+            <td class="p-4">{{ vehicle.vehicle_model }}</td>
+            <td class="p-4" id = 'uid'>{{ vehicle.uid }}</td>
+            <td class="px-4 py-2 flex justify-around">
+              <a href = '/UpdateVehicle'>
+              <button id = 'update' class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Update</button>
+              </a>  
+          </td>
+          <td class = "px-4 py-2 flex justify-around">
+            <button id = 'remove' class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">Delete</button>
           </td>
           {% endfor %}
         </tr>
